@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP MLX90621ESF-BAB-000-SP
+D Board Mount Temperature Sensors 16X4 thermal array sensor, 3Volt, 60deg total FOV
+K
+F https://www.melexis.com/-/media/files/documents/datasheets/mlx90621-datasheet-melexis.pdf
+$ENDCMP
+#
+#End Doc Library

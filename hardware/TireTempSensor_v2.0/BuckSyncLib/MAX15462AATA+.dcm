@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP MAX15462AATA+
+D IC REG BUCK 3.3V 300MA 8TDFN
+K
+F https://pdfserv.maximintegrated.com/package_dwgs/21-0487.PDF
+$ENDCMP
+#
+#End Doc Library

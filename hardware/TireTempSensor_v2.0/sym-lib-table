@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name "buck")(type "Legacy")(uri "${KIPRJMOD}/BuckSyncLib/MAX15462AATA+.lib")(options "")(descr ""))
+  (lib (name "irsensor")(type "Legacy")(uri "${KIPRJMOD}/IRSensor/MLX90621ESF-BAB-000-SP.lib")(options "")(descr ""))
+)
