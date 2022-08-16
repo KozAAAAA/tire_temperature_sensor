@@ -1,0 +1,15 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP Ferrite_Bead_Small_PWR
+D Ferrite bead, small symbol
+K L ferrite bead inductor filter
+F ~
+$ENDCMP
+#
+$CMP MCP14A0052T
+D 1.5A High speed power MOSFET driver with inverting output, SOT-23-5
+K mosfet gate driver
+F http://ww1.microchip.com/downloads/en/DeviceDoc/20005369A.pdf
+$ENDCMP
+#
+#End Doc Library

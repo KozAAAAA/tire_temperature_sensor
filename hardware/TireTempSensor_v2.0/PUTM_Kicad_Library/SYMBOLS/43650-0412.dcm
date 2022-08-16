@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 43650-0412
+D Molex MICRO-FIT 3.0 43650, 3mm Pitch, 4 Way, 1 Row, Right Angle PCB Header, Surface Mount
+K
+F https://www.molex.com/pdm_docs/sd/436500412_sd.pdf
+$ENDCMP
+#
+#End Doc Library
