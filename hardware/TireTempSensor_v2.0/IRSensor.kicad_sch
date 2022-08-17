@@ -643,7 +643,7 @@
     (uuid fe7825cf-d398-4618-be5c-f75f78ca9001)
     (property "Reference" "IC2" (id 0) (at 156.21 110.49 0))
     (property "Value" "MLX90621ESF-BAB-000-SP" (id 1) (at 156.21 113.03 0))
-    (property "Footprint" "MLX90621ESFBAB000SP" (id 2) (at 147.32 90.17 0)
+    (property "Footprint" "IRSensor:MLX90621ESFBAB000SP" (id 2) (at 147.32 90.17 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
     (property "Datasheet" "https://www.melexis.com/-/media/files/documents/datasheets/mlx90621-datasheet-melexis.pdf" (id 3) (at 147.32 92.71 0)

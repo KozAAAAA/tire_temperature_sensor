@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP PTS815_SJK_250_SMTR_LFS
+D Tactile Switches Tact Switch, 12 VDC, 50 mA, 4.2x3.2, 2.5mm H, 250gf, J leads
+K
+F https://www.mouser.com/datasheet/2/60/pts815-1535658.pdf
+$ENDCMP
+#
+#End Doc Library

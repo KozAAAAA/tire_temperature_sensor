@@ -1,0 +1,6 @@
+(fp_lib_table
+  (lib (name "Mosfet")(type "KiCad")(uri "${KIPRJMOD}/Mosfet")(options "")(descr ""))
+  (lib (name "IRSensor")(type "KiCad")(uri "${KIPRJMOD}/IRSensor")(options "")(descr ""))
+  (lib (name "Button")(type "KiCad")(uri "${KIPRJMOD}/Button")(options "")(descr ""))
+  (lib (name "BuckSyncLib")(type "KiCad")(uri "${KIPRJMOD}/BuckSyncLib")(options "")(descr ""))
+)
