@@ -2697,7 +2697,7 @@
       (reference "C17") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/4ba3e466-bd12-480c-9adb-36d880e66258/0d674e9d-9e71-4751-8418-416a0ef20d12"
-      (reference "D1") (unit 1) (value "PESD2CAN,215") (footprint "TSOT23-5:SOT-23")
+      (reference "D1") (unit 1) (value "PESD2CAN,215") (footprint "Package_TO_SOT_SMD:SOT-23")
     )
     (path "/f9126d12-525a-4c2b-82ad-a240338a41b0/2c283889-d092-4427-ae9b-4db003fa873a"
       (reference "D2") (unit 1) (value "RED") (footprint "Diode_SMD:D_0603_1608Metric")
@@ -2799,7 +2799,7 @@
       (reference "U1") (unit 1) (value "STM32L4P5RET6") (footprint "Package_QFP:LQFP-64_10x10mm_P0.5mm")
     )
     (path "/0f13de77-3258-490a-9a0b-6a199964636d/c0ca0520-4226-4bca-b265-f7a1f83fec7f"
-      (reference "U2") (unit 1) (value "MIC5306-2.6YD5-TR") (footprint "TSOT23-5:TSOT-23-5")
+      (reference "U2") (unit 1) (value "MIC5306-2.6YD5-TR") (footprint "Package_TO_SOT_SMD:SOT-23-5")
     )
     (path "/4ba3e466-bd12-480c-9adb-36d880e66258/e927e34a-25e2-470e-a369-360ecba957b3"
       (reference "U3") (unit 1) (value "SN65HVD232") (footprint "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm")

@@ -1451,7 +1451,7 @@
     (uuid c0ca0520-4226-4bca-b265-f7a1f83fec7f)
     (property "Reference" "U2" (id 0) (at 124.46 132.08 0))
     (property "Value" "MIC5306-2.6YD5-TR" (id 1) (at 124.46 134.62 0))
-    (property "Footprint" "TSOT23-5:TSOT-23-5" (id 2) (at 124.46 133.985 0)
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-5" (id 2) (at 124.46 133.985 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://www.mouser.pl/datasheet/2/268/mic5306-1082328.pdf" (id 3) (at 124.46 139.7 0)

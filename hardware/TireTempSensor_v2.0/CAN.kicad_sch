@@ -494,7 +494,7 @@
     (property "Value" "PESD2CAN,215" (id 1) (at 156.21 111.7599 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "TSOT23-5:SOT-23" (id 2) (at 155.575 111.76 0)
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23" (id 2) (at 155.575 111.76 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
     (property "Datasheet" "" (id 3) (at 153.035 107.315 0)
