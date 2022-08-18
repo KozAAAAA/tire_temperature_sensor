@@ -41,6 +41,7 @@ char **environ = __env;
 
 
 /* Functions */
+
 void initialise_monitor_handles()
 {
 }

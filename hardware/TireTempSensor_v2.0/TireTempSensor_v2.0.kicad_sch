@@ -1894,7 +1894,7 @@
     (uuid 66a8a3f0-be1e-4f69-ac6b-26c977e68e76)
     (property "Reference" "J2" (id 0) (at 257.81 129.54 0))
     (property "Value" "CAN_01x04" (id 1) (at 257.81 132.08 0))
-    (property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical" (id 2) (at 257.81 138.43 0)
+    (property "Footprint" "Connector_Wire:SolderWire-0.1sqmm_1x04_P3.6mm_D0.4mm_OD1mm_Relief" (id 2) (at 257.81 138.43 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 257.81 138.43 0)
@@ -2715,7 +2715,7 @@
       (reference "D6") (unit 1) (value "RED") (footprint "Diode_SMD:D_0603_1608Metric")
     )
     (path "/0f13de77-3258-490a-9a0b-6a199964636d/b5ff1b23-f084-4eb0-b287-82c936410df1"
-      (reference "F1") (unit 1) (value "200mA") (footprint "Capacitor_SMD:C_1206_3216Metric")
+      (reference "F1") (unit 1) (value "200mA") (footprint "Fuse:Fuse_1210_3225Metric")
     )
     (path "/68e5b9e0-16b3-4d0c-b881-10c205ad68d8"
       (reference "FB1") (unit 1) (value "60R@100MHz") (footprint "Inductor_SMD:L_0603_1608Metric")
@@ -2751,7 +2751,10 @@
       (reference "J1") (unit 1) (value "SWD_01x06") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical")
     )
     (path "/66a8a3f0-be1e-4f69-ac6b-26c977e68e76"
-      (reference "J2") (unit 1) (value "CAN_01x04") (footprint "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical")
+      (reference "J2") (unit 1) (value "CAN_01x04") (footprint "Connector_Wire:SolderWire-0.1sqmm_1x04_P3.6mm_D0.4mm_OD1mm_Relief")
+    )
+    (path "/0f13de77-3258-490a-9a0b-6a199964636d/9796ff86-39a9-4091-997b-96745af5398a"
+      (reference "JP1") (unit 1) (value "SolderJumper_2_Open") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
     )
     (path "/0f13de77-3258-490a-9a0b-6a199964636d/b91ec45a-7128-4fcc-82b0-0a8a3431d89a"
       (reference "L1") (unit 1) (value "33μH") (footprint "Inductor_SMD:L_Vishay_IFSC-1515AH_4x4x1.8mm")
