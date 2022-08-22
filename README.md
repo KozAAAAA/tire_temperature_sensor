@@ -1,5 +1,7 @@
 # Tire Temperature Sensor v2.0
-IR Camera designed for PUT Motorsport
+<p align="center">
+  IR Camera designed for PUT Motorsport
+</p>
 <p align="center">
   <img src="/readme/1.png" alt="Sublime's custom image"/>
 </p>
