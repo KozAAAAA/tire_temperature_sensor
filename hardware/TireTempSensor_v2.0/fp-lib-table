@@ -5,4 +5,5 @@
   (lib (name "BuckSyncLib")(type "KiCad")(uri "${KIPRJMOD}/BuckSyncLib")(options "")(descr ""))
   (lib (name "Package_TO_SOT_SMD")(type "KiCad")(uri "${KIPRJMOD}/Package_TO_SOT_SMD.pretty")(options "")(descr ""))
   (lib (name "logo")(type "KiCad")(uri "${KIPRJMOD}/PUTM_Kicad_Library/FOOTPRINTS/Logos.pretty")(options "")(descr ""))
+  (lib (name "mylogo")(type "KiCad")(uri "${KIPRJMOD}/MyLogo")(options "")(descr ""))
 )
