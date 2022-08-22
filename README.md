@@ -27,10 +27,10 @@ While driving, a tire heats up. Heat dissipates differently across its surface a
 
 ## Core features
 
-● 4x16 pixel MLX90621 thermal camera
-● STM32L4P5RET
-● 24V to 3.3V buck converter
-● 3.3V to 2.6V LDO
-● 3.3V CAN transceiver
-● Overcurrent and reverse polarity protection
-● Status LEDs
+* 4x16 pixel MLX90621 thermal camera
+* STM32L4P5RET
+* 24V to 3.3V buck converter
+* 3.3V to 2.6V LDO
+* 3.3V CAN transceiver
+* Overcurrent and reverse polarity protection
+* Status LEDs
