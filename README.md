@@ -1,14 +1,5 @@
 # Tire Temperature Sensor v2.0
 
-<p align="center">
-  <img src="/readme/1.png" alt="Sublime's custom image"/>
-</p>
-<p align="center">
-  **IR Camera** designed for **PUT Motorsport**
-</p>
-
-## Introduction
-
 **TTS** (Tire Temperature Sensor) is a PCB designed to measure the temperature quickly, at a distance, and without the need to touch the wheels. The 4x16 pixel IR camera is used to obtain the data. It communicates with the STM microprocessor via the I2C protocol. Data is then averaged out to a 1x8 array of unsigned ints and sent with the CAN Transceiver to the car’s CAN network. This array can be then read off of the telemetry system implemented in the PM-08 racing car.
 
 <p align="center">
@@ -33,3 +24,12 @@ While driving, a tire heats up. Heat dissipates differently across its surface a
 * 3.3V CAN transceiver
 * Overcurrent and reverse polarity protection
 * Status LEDs
+
+## PCB
+
+<p align="center">
+  <img src="/readme/1.png" alt="Sublime's custom image"/>
+</p>
+<p align="center">
+  <img src="/readme/2.png" alt="Sublime's custom image"/>
+</p>
