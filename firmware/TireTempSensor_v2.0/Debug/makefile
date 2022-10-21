@@ -49,34 +49,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Tire_Temperature_Sensor
+BUILD_ARTIFACT_NAME := TireTempSensor_v2.0
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Tire_Temperature_Sensor.elf \
+TireTempSensor_v2.0.elf \
 
 MAP_FILES += \
-Tire_Temperature_Sensor.map \
+TireTempSensor_v2.0.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Tire_Temperature_Sensor.list \
+TireTempSensor_v2.0.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Tire_Temperature_Sensor.elf secondary-outputs
+main-build: TireTempSensor_v2.0.elf secondary-outputs
 
 # Tool invocations
-Tire_Temperature_Sensor.elf Tire_Temperature_Sensor.map: $(OBJS) $(USER_OBJS) /home/mateusz/Desktop/Tire_Temperature_Sensor/FIRMWARE/Tire_Temperature_Sensor/STM32L4P5RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "Tire_Temperature_Sensor.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/mateusz/Desktop/Tire_Temperature_Sensor/FIRMWARE/Tire_Temperature_Sensor/STM32L4P5RETX_FLASH.ld" -Wl,-Map="Tire_Temperature_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+TireTempSensor_v2.0.elf TireTempSensor_v2.0.map: $(OBJS) $(USER_OBJS) /home/mateusz/Desktop/TireTempSensor_v2.0/firmware/TireTempSensor_v2.0/STM32L4P5RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "TireTempSensor_v2.0.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/mateusz/Desktop/TireTempSensor_v2.0/firmware/TireTempSensor_v2.0/STM32L4P5RETX_FLASH.ld" -Wl,-Map="TireTempSensor_v2.0.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -85,14 +85,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Tire_Temperature_Sensor.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Tire_Temperature_Sensor.list"
+TireTempSensor_v2.0.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "TireTempSensor_v2.0.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Tire_Temperature_Sensor.elf Tire_Temperature_Sensor.list Tire_Temperature_Sensor.map default.size.stdout
+	-$(RM) TireTempSensor_v2.0.elf TireTempSensor_v2.0.list TireTempSensor_v2.0.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

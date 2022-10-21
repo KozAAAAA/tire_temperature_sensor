@@ -929,7 +929,6 @@
     )
   )
 
-
   (junction (at 88.9 179.07) (diameter 0) (color 0 0 0 0)
     (uuid 0b4fb9e7-6152-4c37-8535-84019845a685)
   )
@@ -1821,7 +1820,7 @@
   (symbol (lib_id "power:GND") (at 270.51 139.7 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 44dc68c2-74b1-466a-8494-831ff7b29f16)
-    (property "Reference" "#PWR?" (id 0) (at 270.51 146.05 0)
+    (property "Reference" "#PWR0103" (id 0) (at 270.51 146.05 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 270.51 144.78 0))
@@ -2549,6 +2548,9 @@
     (path "/f72ead0b-df34-4b9d-be63-1afd4e60153c"
       (reference "#PWR0102") (unit 1) (value "GND") (footprint "")
     )
+    (path "/44dc68c2-74b1-466a-8494-831ff7b29f16"
+      (reference "#PWR0103") (unit 1) (value "GND") (footprint "")
+    )
     (path "/6b6e55b0-88bf-4ffc-a58b-45186da4d6df"
       (reference "#PWR0106") (unit 1) (value "GND") (footprint "")
     )
@@ -2645,9 +2647,6 @@
     (path "/f9126d12-525a-4c2b-82ad-a240338a41b0/b0c34968-5dae-465d-bcca-dbb8805ecc20"
       (reference "#PWR0137") (unit 1) (value "GND") (footprint "")
     )
-    (path "/44dc68c2-74b1-466a-8494-831ff7b29f16"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
     (path "/f9f9a0d5-067e-4463-98ca-0324d01aab58"
       (reference "C1") (unit 1) (value "4u7") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
@@ -2742,7 +2741,7 @@
       (reference "H4") (unit 1) (value "Mounting_Pad") (footprint "MountingHole:MountingHole_2.7mm_M2.5_ISO14580_Pad")
     )
     (path "/0f13de77-3258-490a-9a0b-6a199964636d/89aaaff4-0310-4bc3-ac15-9a4e83548aea"
-      (reference "IC1") (unit 1) (value "MAX15462AATA+") (footprint "BuckSyncLib:SON50P300X200X80-8N")
+      (reference "IC1") (unit 1) (value "MAX15462AATA+") (footprint "Package_DFN_QFN:TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm")
     )
     (path "/a856e3a9-7561-4cae-8c02-98a27e530f80/fe7825cf-d398-4618-be5c-f75f78ca9001"
       (reference "IC2") (unit 1) (value "MLX90621ESF-BAB-000-SP") (footprint "IRSensor:MLX90621ESFBAB000SP")
