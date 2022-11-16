@@ -88,9 +88,9 @@
       (subtractmaskfromsilk false)
       (outputformat 1)
       (mirror false)
-      (drillshape 1)
+      (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "")
+      (outputdirectory "manufacturing/")
     )
   )
 
@@ -865,9 +865,9 @@
     (fp_line (start -1.6 -0.8) (end 1.6 -0.8) (layer "F.Fab") (width 0.1) (tstamp ad9f3150-405b-4839-a61c-c56befb1229e))
     (fp_line (start -0.711252 -0.91) (end 0.711252 -0.91) (layer "User.2") (width 0.12) (tstamp 1f35c6b7-fd33-4f59-8cb4-39ffe0b72f93))
     (fp_line (start -0.711252 0.91) (end 0.711252 0.91) (layer "User.2") (width 0.12) (tstamp 7a414416-8ead-46c3-aed7-f43dfb723d53))
-    (pad "1" smd roundrect (at -1.475 0 180) (size 1.15 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.217391)
+    (pad "1" smd roundrect (at -1.475 0 180) (size 1.15 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2173913043)
       (net 10 "+3V3") (pintype "passive") (tstamp 1f25d76e-e5d0-4ec1-8830-20bd3e823b54))
-    (pad "2" smd roundrect (at 1.475 0 180) (size 1.15 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.217391)
+    (pad "2" smd roundrect (at 1.475 0 180) (size 1.15 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2173913043)
       (net 2 "GND") (pintype "passive") (tstamp 84a337c5-40a4-4629-8c2c-5527700b1b5f))
     (model "${KICAD6_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.wrl"
       (offset (xyz 0 0 0))
