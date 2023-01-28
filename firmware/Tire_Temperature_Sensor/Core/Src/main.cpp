@@ -26,7 +26,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "MLX90621_API.h"
-#include "PUTM_EV_CAN_LIBRARY/lib/can_interface.hpp"
+#include "can_interface.hpp"
 
 /* USER CODE END Includes */
 
@@ -43,6 +43,9 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
+#define EMISSIVITY 0.98f
+#define TR 15.0f
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -52,20 +55,20 @@
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
+
 void SystemClock_Config(void);
+
 /* USER CODE BEGIN PFP */
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-
-//void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
-//{
-//	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
-//}
-
-
+static uint8_t mlx90621ToAverage[8] = {0};
+static uint8_t eeMLX90621[256];
+static paramsMLX90621 mlx90621;
+static uint16_t mlx90621Frame[66];
+static float mlx90621To[64];
 
 /* USER CODE END 0 */
 
@@ -73,6 +76,7 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -101,25 +105,28 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
-  float Ta;
-  static uint8_t eeMLX90621[256];
-  paramsMLX90621 mlx90621;
-
-  static uint16_t mlx90621Frame[66];
-  static float mlx90621To[64];
-  static uint8_t mlx90621ToAverage[8] = {0};
-
-  float emissivity = 0.98f;
-  float tr = 15.0f;
-
-  int status;
-  status = MLX90621_DumpEE(eeMLX90621);
-  status = MLX90621_Configure(eeMLX90621);
-  status = MLX90621_ExtractParameters(eeMLX90621, &mlx90621);
-
   HAL_CAN_Start(&hcan1);
   HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+
+  int status;
+
+  if(MLX90621_DumpEE(eeMLX90621)!= HAL_OK){
+	  HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
+	  return HAL_ERROR;
+  }
+
+  if(MLX90621_Configure(eeMLX90621) != HAL_OK){
+	  HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
+	  return HAL_ERROR;
+  }
+
+  if(MLX90621_ExtractParameters(eeMLX90621, &mlx90621) != HAL_OK){
+	  HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
+	  return HAL_ERROR;
+  }
+
   /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -128,9 +135,9 @@ int main(void)
 	  HAL_GPIO_TogglePin(LED_OK_GPIO_Port, LED_OK_Pin);
 	  HAL_GPIO_TogglePin(LED_WAR1_GPIO_Port, LED_WAR1_Pin);
 	  HAL_GPIO_TogglePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin);
+
 	  status = MLX90621_GetFrameData(mlx90621Frame);
-	  Ta = MLX90621_GetTa(mlx90621Frame, &mlx90621);
-	  MLX90621_CalculateTo(mlx90621Frame, &mlx90621, emissivity, tr, mlx90621To);
+	  MLX90621_CalculateTo(mlx90621Frame, &mlx90621, EMISSIVITY, TR, mlx90621To);
 	  status = MLX90621_AverageTo(mlx90621To, mlx90621ToAverage);
 	  PUTM_CAN::WheelTemp_main tts
 	  {
