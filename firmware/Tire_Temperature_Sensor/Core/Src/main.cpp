@@ -20,6 +20,7 @@
 #include "main.h"
 #include "can.h"
 #include "i2c.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -103,25 +104,18 @@ int main(void)
   MX_GPIO_Init();
   MX_CAN1_Init();
   MX_I2C2_Init();
+  MX_TIM1_Init();
+
   /* USER CODE BEGIN 2 */
 
-  HAL_CAN_Start(&hcan1);
-  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
-
-  int status;
-
-  if(MLX90621_DumpEE(eeMLX90621)!= HAL_OK){
-	  HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
-	  return HAL_ERROR;
-  }
-
-  if(MLX90621_Configure(eeMLX90621) != HAL_OK){
-	  HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
-	  return HAL_ERROR;
-  }
-
-  if(MLX90621_ExtractParameters(eeMLX90621, &mlx90621) != HAL_OK){
-	  HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
+  if(HAL_CAN_Start(&hcan1) != HAL_OK ||
+     HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK ||
+     MLX90621_DumpEE(eeMLX90621)!= HAL_OK ||
+	 MLX90621_Configure(eeMLX90621) != HAL_OK ||
+	 MLX90621_ExtractParameters(eeMLX90621, &mlx90621) != HAL_OK ||
+	 HAL_TIM_Base_Start_IT(&htim1) != HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
 	  return HAL_ERROR;
   }
 
@@ -131,33 +125,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
-	  HAL_GPIO_TogglePin(LED_OK_GPIO_Port, LED_OK_Pin);
-	  HAL_GPIO_TogglePin(LED_WAR1_GPIO_Port, LED_WAR1_Pin);
-	  HAL_GPIO_TogglePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin);
-
-	  status = MLX90621_GetFrameData(mlx90621Frame);
-	  MLX90621_CalculateTo(mlx90621Frame, &mlx90621, EMISSIVITY, TR, mlx90621To);
-	  status = MLX90621_AverageTo(mlx90621To, mlx90621ToAverage);
-	  PUTM_CAN::WheelTemp_main tts
-	  {
-		  .wheelTemp = {
-				  mlx90621ToAverage[0],
-				  mlx90621ToAverage[1],
-				  mlx90621ToAverage[2],
-				  mlx90621ToAverage[3],
-				  mlx90621ToAverage[4],
-				  mlx90621ToAverage[5],
-				  mlx90621ToAverage[6],
-				  mlx90621ToAverage[7]
-		  }
-	  };
-	  auto tts_main_frame = PUTM_CAN::Can_tx_message<PUTM_CAN::WheelTemp_main>(tts, PUTM_CAN::can_tx_header_WHEELTEMP_MAIN);
-	  status = tts_main_frame.send(hcan1);
-	  if (status != HAL_StatusTypeDef::HAL_OK)
-	  {
-		return 0;
-	  }
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   }
@@ -213,6 +180,45 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  if (htim == &htim1)
+  {
+	  HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LED_WAR1_GPIO_Port, LED_WAR1_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_RESET);
+
+	  if(MLX90621_GetFrameData(mlx90621Frame) != HAL_OK){
+		  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
+		  return;
+	  }
+	  MLX90621_CalculateTo(mlx90621Frame, &mlx90621, EMISSIVITY, TR, mlx90621To);
+	  if(MLX90621_AverageTo(mlx90621To, mlx90621ToAverage)){
+		  HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_SET);
+	  }
+
+	  PUTM_CAN::WheelTemp_main ttsMessage{
+		  .wheelTemp = {
+				  mlx90621ToAverage[0],
+				  mlx90621ToAverage[1],
+				  mlx90621ToAverage[2],
+				  mlx90621ToAverage[3],
+				  mlx90621ToAverage[4],
+				  mlx90621ToAverage[5],
+				  mlx90621ToAverage[6],
+				  mlx90621ToAverage[7]
+		  }
+	  };
+	  auto ttsMainFrame = PUTM_CAN::Can_tx_message<PUTM_CAN::WheelTemp_main>(ttsMessage, PUTM_CAN::can_tx_header_WHEELTEMP_MAIN);
+
+	  if(ttsMainFrame.send(hcan1) != HAL_OK){
+		  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
+	  }
+	  HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_SET);
+  }
+}
 
 /* USER CODE END 4 */
 
