@@ -44,14 +44,24 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
-#define EMISSIVITY 0.98f
-#define TR 15.0f
 
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
+static constexpr float emissivity = 0.98f;
+static constexpr float tr = 15.0f;
+
+static volatile bool flagMlxReceive = false;
+static volatile bool flagCanSend = false;
+
+static uint8_t mlx90621ToAverage[8] = {0};
+static uint8_t eeMLX90621[256];
+static paramsMLX90621 mlx90621;
+static uint16_t mlx90621Frame[66];
+static float mlx90621To[64];
 
 /* USER CODE END PV */
 
@@ -65,11 +75,49 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-static uint8_t mlx90621ToAverage[8] = {0};
-static uint8_t eeMLX90621[256];
-static paramsMLX90621 mlx90621;
-static uint16_t mlx90621Frame[66];
-static float mlx90621To[64];
+static void LED_Reset(){
+	HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_WAR1_GPIO_Port, LED_WAR1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_RESET);
+}
+
+
+static void MLX90621_Receive()
+{
+	if(MLX90621_GetFrameData(mlx90621Frame) != HAL_OK){
+		  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
+		  return;
+	}
+	MLX90621_CalculateTo(mlx90621Frame, &mlx90621, emissivity, tr, mlx90621To);
+	if(MLX90621_AverageTo(mlx90621To, mlx90621ToAverage)){
+		  HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_SET);
+	}
+}
+
+static void CAN_Send()
+{
+	PUTM_CAN::WheelTemp_main ttsMessage{
+		  .wheelTemp = {
+				  mlx90621ToAverage[0],
+				  mlx90621ToAverage[1],
+				  mlx90621ToAverage[2],
+				  mlx90621ToAverage[3],
+				  mlx90621ToAverage[4],
+				  mlx90621ToAverage[5],
+				  mlx90621ToAverage[6],
+				  mlx90621ToAverage[7]
+		  }
+	};
+	auto ttsMainFrame = PUTM_CAN::Can_tx_message<PUTM_CAN::WheelTemp_main>(ttsMessage, PUTM_CAN::can_tx_header_WHEELTEMP_MAIN);
+
+	if(ttsMainFrame.send(hcan1) != HAL_OK){
+		  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
+	}
+	else{
+		  HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_SET);
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -87,6 +135,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -123,8 +172,21 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  while (1){
+
+	  if(flagMlxReceive == true){
+		  LED_Reset();
+		  MLX90621_Receive();
+		  flagMlxReceive = false;
+		  flagCanSend = true;
+	  }
+
+	  if(flagCanSend == true){
+		  CAN_Send();
+		  flagCanSend = false;
+	  }
+
+
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   }
@@ -185,40 +247,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim == &htim1)
   {
-	  HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(LED_WAR1_GPIO_Port, LED_WAR1_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_RESET);
-
-	  if(MLX90621_GetFrameData(mlx90621Frame) != HAL_OK){
-		  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
-		  return;
-	  }
-	  MLX90621_CalculateTo(mlx90621Frame, &mlx90621, EMISSIVITY, TR, mlx90621To);
-	  if(MLX90621_AverageTo(mlx90621To, mlx90621ToAverage)){
-		  HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_SET);
-	  }
-
-	  PUTM_CAN::WheelTemp_main ttsMessage{
-		  .wheelTemp = {
-				  mlx90621ToAverage[0],
-				  mlx90621ToAverage[1],
-				  mlx90621ToAverage[2],
-				  mlx90621ToAverage[3],
-				  mlx90621ToAverage[4],
-				  mlx90621ToAverage[5],
-				  mlx90621ToAverage[6],
-				  mlx90621ToAverage[7]
-		  }
-	  };
-	  auto ttsMainFrame = PUTM_CAN::Can_tx_message<PUTM_CAN::WheelTemp_main>(ttsMessage, PUTM_CAN::can_tx_header_WHEELTEMP_MAIN);
-
-	  if(ttsMainFrame.send(hcan1) != HAL_OK){
-		  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
-	  }
-	  else{
-		  HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_SET);
-	  }
+	  flagMlxReceive = true;
   }
 }
 
