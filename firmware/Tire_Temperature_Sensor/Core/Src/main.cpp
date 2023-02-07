@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "MLX90621_API.h"
+#include "MLX90621_I2C_Driver.h"
 #include "can_interface.hpp"
 
 /* USER CODE END Includes */
@@ -54,8 +55,8 @@
 static constexpr float emissivity = 0.98f;
 static constexpr float tr = 15.0f;
 
-static volatile bool flagMlxReceive = false;
-static volatile bool flagCanSend = false;
+static volatile bool mlx_receive_flag = true;
+static volatile bool process_and_send_flag = false;
 
 static uint8_t mlx90621ToAverage[8] = {0};
 static uint8_t eeMLX90621[256];
@@ -75,28 +76,29 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-static void LED_Reset(){
+static void led_reset(){
 	HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_WAR1_GPIO_Port, LED_WAR1_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_RESET);
 }
 
-
-static void MLX90621_Receive()
+static void mlx_receive()
 {
 	if(MLX90621_GetFrameData(mlx90621Frame) != HAL_OK){
 		  HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
 		  return;
 	}
-	MLX90621_CalculateTo(mlx90621Frame, &mlx90621, emissivity, tr, mlx90621To);
-	if(MLX90621_AverageTo(mlx90621To, mlx90621ToAverage)){
-		  HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_SET);
-	}
 }
 
-static void CAN_Send()
+static void process_and_send()
 {
+	MLX90621_I2C_Seq_Interpret_Data();
+	MLX90621_CalculateTo(mlx90621Frame, &mlx90621, emissivity, tr, mlx90621To);
+	if(MLX90621_AverageTo(mlx90621To, mlx90621ToAverage)){
+		HAL_GPIO_WritePin(LED_WAR2_GPIO_Port, LED_WAR2_Pin, GPIO_PIN_SET);
+	}
+
 	PUTM_CAN::WheelTemp_main ttsMessage{
 		  .wheelTemp = {
 				  mlx90621ToAverage[0],
@@ -174,21 +176,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1){
 
-	  if(flagMlxReceive == true){
-		  LED_Reset();
-		  MLX90621_Receive();
-		  flagMlxReceive = false;
-		  flagCanSend = true;
+	  if(mlx_receive_flag == true){
+		  led_reset();
+		  mlx_receive();
+		  mlx_receive_flag = false;
 	  }
 
-	  if(flagCanSend == true){
-		  CAN_Send();
-		  flagCanSend = false;
+	  if(process_and_send_flag == true){
+		  process_and_send();
+		  process_and_send_flag = false;
 	  }
-
 
     /* USER CODE END WHILE */
-    /* USER CODE BEGIN 3 */
+
+	/* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
@@ -247,8 +248,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim == &htim1)
   {
-	  flagMlxReceive = true;
+	  mlx_receive_flag = true;
   }
+}
+
+void HAL_I2C_MasterTxCpltCallback (I2C_HandleTypeDef * hi2c)
+{
+	if(MLX90621_I2C_Seq_Receive_IT() != HAL_OK){
+		HAL_GPIO_WritePin(LED_ERR_GPIO_Port, LED_ERR_Pin, GPIO_PIN_SET);
+	}
+}
+
+void HAL_I2C_MasterRxCpltCallback (I2C_HandleTypeDef * hi2c)
+{
+	process_and_send_flag = true;
 }
 
 /* USER CODE END 4 */

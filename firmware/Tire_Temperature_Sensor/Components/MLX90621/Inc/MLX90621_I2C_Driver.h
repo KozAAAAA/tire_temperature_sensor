@@ -22,6 +22,10 @@
 #include <stdint.h>
 
     void MLX90621_I2CInit(void);
+
+    int MLX90621_I2C_Seq_Receive_IT();
+    void MLX90621_I2C_Seq_Interpret_Data();
+
     int MLX90621_I2CReadEEPROM(uint8_t slaveAddr, uint8_t startAddress, uint16_t nMemAddressRead, uint8_t *data);
     int MLX90621_I2CRead(uint8_t slaveAddr, uint8_t command, uint8_t startAddress, uint8_t addressStep, uint8_t nMemAddressRead, uint16_t *data);
     int MLX90621_I2CWrite(uint8_t slaveAddr, uint8_t command, uint8_t checkValue, uint16_t data);
